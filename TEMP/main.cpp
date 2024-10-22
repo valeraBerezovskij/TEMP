@@ -1,66 +1,88 @@
-#include<iostream>
-#include<time.h>
+#include <iostream> 
 using namespace std;
 
-class Point 
-{
-	int x;
-	int y;
+class Fraction {
+private:
+    int numerator;
+    int denominator;
 public:
-	Point(): x(0), y(0) {}
+    void Input(int x, unsigned y) {
+        numerator = x;
+        denominator = y;
+    }
+    void Input() {
+        numerator = rand() % 100;
+        denominator = rand() % 100 + 1;
+    }   
+    void print() {
+        cout << numerator << '/' << denominator << endl;
+    }
+    Fraction(int numerator_ = 0, int denominator_ = 1) : numerator(numerator_), denominator(denominator_) {}
+    
+    int getNumerator() const { return numerator; }
+    int getDenominator() const { return denominator; }
 
-	Point(int x1, int y1) :x(x1), y(y1) { }
+    int commonDenominator(const Fraction& frac1, const Fraction& frac2) {
+        int d1 = frac1.denominator;
+        int d2 = frac2.denominator;
 
-	void Init() {
-		x = rand() % 10;
-		y = rand() % 10;
-	}
+        while (d1 != d2) {
+            if     (d1 < d2){ d1 += frac1.denominator; }
+            else if(d2 < d1){ d2 += frac2.denominator; }
+        }
+        return d1;
+    }
+    Fraction operator+(const Fraction& other){
+        if (this->denominator == other.denominator) {
+            return Fraction(this->numerator + other.numerator, this->denominator);
+        }
+        const int cdenominator = commonDenominator(*this, other);
+        return Fraction(this->numerator * (cdenominator / this->denominator) + other.numerator * (cdenominator / other.denominator), cdenominator);
+    }
+    Fraction operator-(const Fraction& other) {
+        if (this->denominator == other.denominator) {
+            return Fraction(this->numerator - other.numerator, this->denominator);
+        }
+        const int cdenominator = commonDenominator(*this, other);
+        return Fraction(this->numerator * (cdenominator / this->denominator) - other.numerator * (cdenominator / other.denominator), cdenominator);
+    }
+    Fraction operator*(const Fraction& other) {
+        return Fraction(this->numerator * other.numerator, this->denominator * other.denominator);
+    }
+    Fraction operator/(const Fraction& other) {
+        return Fraction(this->numerator * other.denominator, this->denominator * other.numerator);
+    }
+    Fraction operator++() {
+        numerator += denominator;
+        return *this;
+    }
+    Fraction operator++(int) {
+        Fraction temp(*this);
+        numerator += denominator;
+        return temp;
+    }
+    Fraction operator--() {
+        numerator -= denominator;
+        return *this;
+    }
+    Fraction operator--(int) {
+        Fraction temp(*this);
+        numerator -= denominator;
+        return temp;
+    }
 
-	void Init(int x1, int y1) {
-		x = x1; y = y1;
-	}
-
-	void Output() {
-		cout << "X: " << x << "\tY: " << y << endl;
-	}
-
-	Point operator+(const Point& other) {
-		return Point(x + other.x, y + other.y);
-	}
-
-	Point operator-(const Point& other) {
-		return Point(x - other.x, y - other.y);
-	}
-	
-	Point operator*(const Point& other) {
-		return Point(x * other.x, y * other.y);
-	}
-	
-	Point operator/(const Point& other) {
-		return Point(x / other.x, y / other.y);
-	}
-
-	Point operator+(int a) {
-		return Point(x + a, y + a);
-	}
-
-	Point operator*(int a) {
-		return Point(x * a, y * a);
-	}
-
-	Point operator-(int a) {
-		return Point(x - a, y - a);
-	}
-
-	Point operator/(int a) {
-		return Point(x / a, y / a);
-	}
 };
-	
-int main()
-{
-	Point a(2, 3);
-	Point b(2, 3);
-	Point c = a + 10;
-	c.Output();
+
+int main() {
+    srand(time(NULL));
+
+    Fraction frac (10, 2);
+    frac.print();
+
+    Fraction frac2(2,3);
+    frac2.print();
+
+    Fraction c = ++frac;
+    c.print();
+
 }
