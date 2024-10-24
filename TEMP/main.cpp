@@ -133,7 +133,9 @@ public:
 		return *this;
 	}
 	Circle& operator-=(int a) {
-		r -= a;
+		if (r > a) {
+			r -= a;
+		}
 		return *this;
 	}
 	Circle& operator*=(int a) {
@@ -154,8 +156,9 @@ public:
 		return temp;
 	}
 	Circle operator--() {
-		r -= 1;
-		return *this;
+		if (r > 1) {
+			r -= 1;
+		}		return *this;
 	}
 	Circle operator--(int) {
 		Circle temp(*this);
