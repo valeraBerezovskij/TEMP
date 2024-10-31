@@ -1,63 +1,210 @@
 #include<iostream>
-#include<Windows.h>
 using namespace std;
 
-class Student
+class Point
 {
-	char* name;
-	int age;
+	int x;
+	int y;
 public:
-	////  prototype 
-	Student();
-	Student(const char*, int); // construct by 2 param
-	Student(const Student& obj)
-		: age(obj.age)
+	Point()  // construct by default
 	{
-		name = new char[strlen(obj.name) + 1];
-		strcpy_s(name, strlen(obj.name) + 1, obj.name);
+		cout << "Construct\n";
+		x = y = 0;
+	}
+	Point(int x1, int y1)   // Construct by 2 param
+	{
+		cout << "Construct by 2 param\n";
+		x = x1;
+		y = y1;
+	}
+	void Init()
+	{
+		x = rand() % 10;
+		y = rand() % 10;
+	}
+	void Init(int x1, int y1)
+	{
+		x = x1;
+		y = y1;
+	}
+	void Output()
+	{
+		cout << "X: " << x << "\tY: " << y << endl;
 	}
 
-	Student operator=(Student& other) {
-		if (this != &other) {
-			if (name != nullptr) { delete[] name; }
-			name = new char[strlen(other.name) + 1];
-			strcpy_s(name, strlen(other.name) + 1, other.name);
-			age = other.age;
-		}
-		return *this;
+	int GetX()
+	{
+		return x;
 	}
-	void Output();
-	~Student();
-
+	int GetY()
+	{
+		return y;
+	}
+	void SetX(int a)
+	{
+		x = a;
+	}
+	void SetY(int a)
+	{
+		y = a;
+	}
 };
-Student::Student()
-{
-	name = nullptr;
-	age = 0;
+
+Point operator+(int a, Point b) {
+	Point rez;
+	rez.SetX(b.GetX() + a);
+	rez.SetY(b.GetY() + a);
+	return rez;
 }
-Student::Student(const char* Name, int Age)
-{
-	name = new char[strlen(Name) + 1];
-	strcpy_s(name, strlen(Name) + 1, Name);
-	age = Age;
+
+Point operator+(Point b, int a) {
+	Point rez;
+	rez.SetX(b.GetX() + a);
+	rez.SetY(b.GetY() + a);
+	return rez;
 }
-void Student::Output()
-{
-	cout << "Name: " << name << endl
-		<< "Age: " << age << endl << endl;
+
+int operator+(Point a, Point b) {
+	return a.GetX() + b.GetX() * a.GetY() + b.GetY();
 }
-Student::~Student()
-{
-	if (name != nullptr)
-	{
-		delete[] name;
-	}
+
+Point operator-(int a, Point b) {
+	Point rez;
+	rez.SetX(b.GetX() - a);
+	rez.SetY(b.GetY() - a);
+	return rez;
+}
+
+Point operator-(Point b, int a) {
+	Point rez;
+	rez.SetX(b.GetX() - a);
+	rez.SetY(b.GetY() - a);
+	return rez;
+}
+
+Point operator*(int a, Point b) {
+	Point rez;
+	rez.SetX(b.GetX() * a);
+	rez.SetY(b.GetY() * a);
+	return rez;
+}
+
+Point operator*(Point b, int a) {
+	Point rez;
+	rez.SetX(b.GetX() * a);
+	rez.SetY(b.GetY() * a);
+	return rez;
+}
+
+Point operator/(int a, Point b) {
+	Point rez;
+	rez.SetX(b.GetX() / a);
+	rez.SetY(b.GetY() / a);
+	return rez;
+}
+
+Point operator/(Point b, int a) {
+	Point rez;
+	rez.SetX(b.GetX() / a);
+	rez.SetY(b.GetY() / a);
+	return rez;
+}
+
+
+
+Point operator++(Point& a) {
+	a.SetX(a.GetX() + 10);
+	a.SetY(a.GetY() + 10);
+	return a;
+
+}
+Point operator++(Point& a, int) {
+	Point temp = a;
+	a.SetX(a.GetX() + 10);
+	a.SetY(a.GetY() + 10);
+	return temp;
+}
+
+
+Point operator--(Point& a) {
+	a.SetX(a.GetX() - 10);
+	a.SetY(a.GetY() - 10);
+	return a;
+
+}
+Point operator--(Point& a, int) {
+	Point temp = a;
+	a.SetX(a.GetX() - 10);
+	a.SetY(a.GetY() - 10);
+	return temp;
+}
+
+Point& operator+=(Point& a, Point& b) {
+	a.SetX(a.GetX() + b.GetX());
+	a.SetY(a.GetY() + b.GetY());
+	return a;
+}
+
+Point& operator+=(Point& a, int b) {
+	a.SetX(a.GetX() + b);
+	a.SetY(a.GetY() + b);
+	return a;
+}
+
+
+Point& operator-=(Point& a, Point& b) {
+	a.SetX(a.GetX() + b.GetX());
+	a.SetY(a.GetY() + b.GetY());
+	return a;
+}
+
+Point& operator-=(Point& a, int b) {
+	a.SetX(a.GetX() - b);
+	a.SetY(a.GetY() - b);
+	return a;
+}
+
+Point& operator*=(Point& a, Point& b) {
+	a.SetX(a.GetX() * b.GetX());
+	a.SetY(a.GetY() * b.GetY());
+	return a;
+}
+
+Point& operator*=(Point& a, int b) {
+	a.SetX(a.GetX() * b);
+	a.SetY(a.GetY() * b);
+	return a;
+}
+
+Point& operator/=(Point& a, Point& b) {
+	a.SetX(a.GetX() / b.GetX());
+	a.SetY(a.GetY() / b.GetY());
+	return a;
+}
+
+Point& operator/=(Point& a, int b) {
+	a.SetX(a.GetX() / b);
+	a.SetY(a.GetY() / b);
+	return a;
 }
 
 int main()
 {
-	Student obj1("Oleg", 21);
-	Student obj2("Og", 21);
-	obj1 = obj2;
-	obj1.Output();
+	srand(unsigned(time(0)));
+
+	Point a(1, 2);
+	Point b(3, 4);
+
+	Point q = 100 - a;
+	q = a * 10;
+	q = 100 / a;
+
+	int res = a + b;
+
+	Point t = --a;
+	Point d = a--;
+
+	a += 10;
+	a += b;
+
 }
