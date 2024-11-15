@@ -1,79 +1,129 @@
 ﻿#include<iostream>
-#include<time.h>
 using namespace std;
 
-class Point
-{
-    int x;
-    int y;
+class Person {
+protected:
+	string name;
+	int age;
 public:
-    Point() = default;
-    Point(int x_, int y_) : x(x_), y(y_) {}
-    int getX() { return x; }
-    int getY() { return y; }
-    int& operator[](int index) { return index > 0 ? y : x; }
-    Point& operator=(int num) {
-        x = num; y = num;
-        return *this;
-    }
+	Person() = default;
+	Person(const char* n, const int a) 
+		: name(n), age(a) { }
+
+	void output() {
+		cout << "Name:\t" << name << endl;
+		cout << "Age:\t" << age << endl;
+	}
+
+	void input() {
+		cout << "Input name: ";
+		cin >> name;
+		cout << "Input age: ";
+		cin >> age;
+	}
 };
 
-ostream& operator << (ostream& os, Point& other) {
-    os << other.getX() << '/' << other.getY();
-    return os;
-}
-template<class T >
-class MyArray
-{
-    T* mas = nullptr;
-    int size;
+class Student : public Person {
+private:
+	string academy;
 public:
-    MyArray();
-    void Output();
-    ~MyArray();
-    T operator[](int index);
-    int GetSize()const { return size; }
-    T* GetPtr()const { return mas; }
-    void SetSize(int s) { size = s; }
-    void SetPtr(T* ptr) { mas = ptr; }
+	Student() = default;
+	Student(const char* n, const int a, const char* ac) 
+		: Person(n, a), academy(ac) { }
+
+	void output() {
+		Person::output();
+		cout << "Academy:\t" << academy << endl;
+	}
+
+	void input() {
+		Person::input();
+		cout << "Input academy: ";
+		cin >> academy;
+	}
 };
 
-template<class T>MyArray<T>::MyArray() {
-    size = 10;
-    mas = new T[10];
-    for (int i = 0; i < size; i++) {
-        mas[i] = rand() % 100 * 1.2;
-    }
+class Teacher : public Person {
+	string school;
+	string subject;
+public:
+	Teacher() = default;
+	Teacher(const char* n, const int a, const char* sc, const char* subj)
+		: Person(n, a), school(sc), subject(subj){ }
+
+	void output() {
+		Person::output();
+		cout << "School:\t" << school << endl;
+		cout << "Subject:\t" << subject << endl;
+	}
+
+	void input() {
+		Person::input();
+		cout << "Input school: ";
+		cin >> school;
+		cout << "Input subject: ";
+		cin >> subject;
+	}
+};
+
+class Doctor : public Person {
+private:
+	string hospital;
+	double salary;
+public:
+	Doctor() = default;
+	Doctor(const char* n, const int a, const char* h, double s)
+		: Person(n, a), hospital(h), salary(s) { }
+
+	void output() {
+		Person::output();
+		cout << "Hospital:\t" << hospital << endl;
+		cout << "Salary:\t" << salary << endl;
+	}
+
+	void input() {
+		Person::input();
+		cout << "Input hospital: ";
+		cin >> hospital;
+		cout << "Input salary: ";
+		cin >> salary;
+	}
+};
+
+class Director : public Person {
+private:
+	string school;
+	double salary;
+public:
+	Director() = default;
+	Director(const char* n, const int a, const char* sc, double s)
+		: Person(n, a), school(sc), salary(s) { }
+
+	void output() {
+		Person::output();
+		cout << "School:\t" << school << endl;
+		cout << "Salary:\t" << salary << endl;
+	}
+
+	void input() {
+		Person::input();
+		cout << "Input school: ";
+		cin >> school;
+		cout << "Input salary: ";
+		cin >> salary;
+	}
+};
+
+int main() {
+	Person me("Valera", 16);
+	Student a("Andrii", 17, "ItStep");
+	Teacher b("Maksim", 42, "Itstep", "Math");
+	Doctor c("Anna", 8, "№7", 9000);
+	Director d("Evgenii", 39, "Itstep", 99999999);
+
+	me.output();
+	a.output();
+	b.output();
+	c.output();
+	d.output();
 }
-template<class T>void MyArray<T>::Output() {
-    for (int i = 0; i < size; i++) {
-        cout << mas[i] << "\t";
-    }
-    cout << endl << endl;
-}
-template<class T>MyArray<T>::~MyArray() {
-    if (mas != nullptr)
-        delete[] mas;
-}
-template<class T>T MyArray<T>::operator[](int index) {
-    return mas[index];
-}
-
-void main()
-{
-    srand(time(0));
-    MyArray<Point> obj1;
-    obj1.Output();
-
-    MyArray<char> obj2;
-    obj2.Output();
-
-    MyArray<double>obj3;
-    obj3.Output();
-
-
-
-
-    system("pause");
-}
-
